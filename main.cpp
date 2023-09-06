@@ -6,9 +6,9 @@
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 
-#include "Game.hpp"
+#include "res/cpp/Game.hpp"
 
-using boost::asio::ip::udp;
+// using boost::asio::ip::udp;
 
 int main(int argc, char *argv[])
 {
