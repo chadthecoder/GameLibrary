@@ -35,7 +35,7 @@ lin/Game.o: res/cpp/Game.cpp
 	$(cc) -c res/cpp/Game.cpp -o lin/Game.o
 
 runLin:
-	lin/testGame "127.0.0.1" res/cpp/snd/diceRoll.mp3
+	lin/testGame "127.0.0.1" res/snd/diceRoll.mp3
 
 cleanLin:
 	rm lin/*.o

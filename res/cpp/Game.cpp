@@ -11,7 +11,7 @@ Game::Game(std::string ip, char *sound) : /* socket_(this->io_context), send_buf
   // this->io_context = io_context;
   this->ip = ip;
   this->sound = sound;
-  std::string funny = "res/cpp/snd/diceRoll.mp3";
+  std::string funny = "res/snd/diceRoll.mp3";
   const char *str = funny.c_str();
   // PlaySound(this->sound);
   PlaySound(str);
