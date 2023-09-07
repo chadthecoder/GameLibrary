@@ -4,9 +4,8 @@
 // using namespace std;
 
 // SDL_Texture *textLeftScore, *textRightScore;
-Rectangle rectLeftSrc, rectRightSrc, rectDest;
 
-Pong::Pong(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ mIsRunning(true), /*  mTicksCount(0), */ gameBall(1500.0f, 500.0f, -100.0f, 117.5f, 15, 15), leftPoints(0), rightPoints(0)
+Game::Game(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ mIsRunning(true), /*  mTicksCount(0), */ gameBall(1500.0f, 500.0f, -100.0f, 117.5f, 15, 15), leftPoints(0), rightPoints(0)
 {
   // print the ref of io_context to show that it worked for now
   // this->io_context = io_context;
@@ -15,7 +14,42 @@ Pong::Pong(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ m
   // this->StartSend();
 }
 
-/* void Pong::StartSend()
+int Game::CreateWindow()
+{
+  /* Initialize the library */
+  if (!glfwInit())
+  {
+    return -1;
+  }
+
+  /* Create a windowed mode window and its OpenGL context */
+  window = glfwCreateWindow(1366, 768, "Hello World", NULL, NULL);
+  if (!window)
+  {
+    glfwTerminate();
+    return -1;
+  }
+
+  /* Make the window's context current */
+  glfwMakeContextCurrent(window);
+  return 0;
+}
+
+std::string Game::InitGLEW()
+{
+  // Init glew
+  if (glewInit() != GLEW_OK)
+  {
+    std::cout << "Error\n";
+  }
+
+  openglVersion =
+      reinterpret_cast<const char *>(glGetString(GL_VERSION));
+
+  return openglVersion;
+}
+
+/* void Game::StartSend()
 {
   udp::resolver resolver(this->io_context);
   std::cout << this->ip << std::endl;
@@ -29,7 +63,7 @@ Pong::Pong(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ m
   StartReceive();
 }
 
-void Pong::StartReceive()
+void Game::StartReceive()
 {
   std::cout << "In startreceive\n"
             << std::endl;
@@ -42,23 +76,16 @@ void Pong::StartReceive()
   std::cout.write(recv_buf.data(), len);
 } */
 
-void Pong::centerVector2(Vector2 vec)
+void Game::centerVector2(Vector2 vec)
 {
   vec.x = this->screenWidth / 2;
   vec.y = this->screenHeight / 2;
 }
 
-bool Pong::Initialize()
+bool Game::Initialize()
 {
-  /*   if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-    {
-      SDL_Log("Error: %s", SDL_GetError());
-      return false;
-    }
-
-    SDL_GetCurrentDisplayMode(0, &this->DM);
-    this->screenHeight = this->DM.h;
-    this->screenWidth = this->DM.w; */
+  CreateWindow();
+  InitGLEW();
   this->thickness = this->screenWidth / 100;
   this->paddleHeight = this->thickness * 6;
   this->paddleU.height = paddleHeight;
@@ -68,7 +95,7 @@ bool Pong::Initialize()
   /* Making it fullscreen only is the only non complicated way   *
    * to make it look good on Ubuntu because of Ubuntu's top bar. */
   /*   this->mWindow = SDL_CreateWindow(
-        "Pong Game",
+        "Game",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         this->screenWidth,
@@ -145,14 +172,14 @@ bool Pong::Initialize()
   return true;
 }
 
-void Pong::Shutdown()
+void Game::Shutdown()
 {
   /*   SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit(); */
 }
 
-void Pong::RunLoop()
+void Game::RunLoop()
 {
   while (this->mIsRunning)
   {
@@ -165,7 +192,7 @@ void Pong::RunLoop()
   }
 }
 
-void Pong::UpdateScore()
+void Game::UpdateScore()
 {
   // this->leftPoints, this->rightPoints
 
@@ -181,7 +208,7 @@ void Pong::UpdateScore()
     SDL_FreeSurface(surfaceRightScore); */
 }
 
-void Pong::ProcessInput()
+void Game::ProcessInput()
 {
   /* while (SDL_PollEvent(&this->event))
   {
@@ -225,7 +252,7 @@ void Pong::ProcessInput()
   } */
 }
 
-bool Pong::UpdateGame()
+bool Game::UpdateGame()
 {
   /* while (!SDL_TICKS_PASSED(SDL_GetTicks(), this->mTicksCount + 16))
     ;
@@ -327,7 +354,7 @@ bool Pong::UpdateGame()
   return true;
 }
 
-Paddle Pong::createPaddle(float xq, float yq, int widthq, int heightq, int directionq)
+Paddle Game::createPaddle(float xq, float yq, int widthq, int heightq, int directionq)
 {
   Paddle mPaddle;
   mPaddle.x = xq;
@@ -338,7 +365,7 @@ Paddle Pong::createPaddle(float xq, float yq, int widthq, int heightq, int direc
   return mPaddle;
 }
 
-void Pong::drawPaddle(Paddle mPaddle)
+void Game::drawPaddle(Paddle mPaddle)
 {
   Rectangle rectMPaddle{
       static_cast<int>(mPaddle.x - (mPaddle.width / 2.0f)),
@@ -348,7 +375,7 @@ void Pong::drawPaddle(Paddle mPaddle)
   // SDL_RenderFillRect(this->mRenderer, &rectMPaddle);
 }
 
-Rectangle Pong::createPaddleU()
+Rectangle Game::createPaddleU()
 {
   Rectangle myPaddle{
       static_cast<int>(paddleU.x - (paddleU.width / 2.0f)),
@@ -357,12 +384,12 @@ Rectangle Pong::createPaddleU()
       this->paddleU.height};
   return myPaddle;
 }
-void Pong::drawPaddleU(Rectangle myPaddle)
+void Game::drawPaddleU(Rectangle myPaddle)
 {
   // SDL_RenderFillRect(this->mRenderer, &myPaddle);
 }
 
-void Pong::Render()
+void Game::Render()
 {
   // renderer, rgba; black
   /*   SDL_SetRenderDrawColor(

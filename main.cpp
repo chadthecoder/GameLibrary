@@ -1,10 +1,10 @@
 // test for Library
 
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
+// #include <cstdio>
+// #include <cstdlib>
+// #include <iostream>
+// #include <boost/array.hpp>
+// #include <boost/asio.hpp>
 
 #include "res/cpp/Game.hpp"
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         std::string ip = argv[1];
         std::cout << "arg: " << argv[1] << "\nip: " << ip << std::endl;
 
-        Pong game(ip);
+        Game game(ip);
         std::cout << "Game init done\n"
                   << std::endl;
         bool success = game.Initialize();

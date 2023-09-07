@@ -1,5 +1,5 @@
-#ifndef PONG_H
-#define PONG_H
+#ifndef GAME_H
+#define GAME_H
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #include "libsWin\glew\include\GL\glew.h"
@@ -158,15 +158,17 @@ struct Ball
   }
 };
 
-class Pong
+class Game
 {
 public:
-  Pong(std::string ip);
+  Game(std::string ip);
   bool Initialize();
   void RunLoop();
   void Shutdown();
 
 private:
+  int CreateWindow();     // creates glfw window
+  std::string InitGLEW(); // returns opengl version
   void ProcessInput();
   bool UpdateGame();
   void Render();
@@ -182,6 +184,9 @@ private:
   Rectangle createPaddleU();
   void drawPaddleU(Rectangle myPaddle);
 
+  GLFWwindow *window;
+  std::string openglVersion;
+  Rectangle rectLeftSrc, rectRightSrc, rectDest;
   // SDL_Window *mWindow;
   // SDL_Renderer *mRenderer;
   Paddle paddleU, funny;
@@ -204,4 +209,4 @@ private:
   // size_t len;
 };
 
-#endif
+#endif // GAME_H
