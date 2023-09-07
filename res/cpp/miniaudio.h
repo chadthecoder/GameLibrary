@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 Audio playback and capture library. Choice of public domain or MIT-0. See license statements at the end of this file.
 miniaudio - v0.11.18 - 2023-08-07
@@ -3705,6 +3703,7 @@ See below for some tips on improving performance.
 - When compiling with VC6 and earlier, decoding is restricted to files less than 2GB in size. This
   is due to 64-bit file APIs not being available.
 */
+
 #ifndef miniaudio_h
 #define miniaudio_h
 

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        if (argc != 2)
+        if (argc != 3)
         {
             std::cerr << "Usage: main <host>" << std::endl;
             return 1;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         std::string ip = argv[1];
         std::cout << "arg: " << argv[1] << "\nip: " << ip << std::endl;
 
-        Game game(ip);
+        Game game(ip, argv[2]);
         std::cout << "Game init done\n"
                   << std::endl;
         bool success = game.Initialize();

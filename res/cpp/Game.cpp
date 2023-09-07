@@ -5,12 +5,14 @@
 
 // SDL_Texture *textLeftScore, *textRightScore;
 
-Game::Game(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ mIsRunning(true), /*  mTicksCount(0), */ gameBall(1500.0f, 500.0f, -100.0f, 117.5f, 15, 15), leftPoints(0), rightPoints(0)
+Game::Game(std::string ip, char *sound) : /* socket_(this->io_context), send_buf({{0}}), */ mIsRunning(true), /*  mTicksCount(0), */ gameBall(1500.0f, 500.0f, -100.0f, 117.5f, 15, 15), leftPoints(0), rightPoints(0)
 {
   // print the ref of io_context to show that it worked for now
   // this->io_context = io_context;
   this->ip = ip;
-  PlaySound("res/snd/diceRoll.mp3");
+  this->sound = sound;
+  PlaySound("res/cpp/snd/diceRoll.mp3");
+
   // std::cout << &this->io_context << " " << ip << std::endl;
   // this->StartSend();
 }
@@ -50,18 +52,31 @@ std::string Game::InitGLEW()
   return openglVersion;
 }
 
-int Game::PlaySound(const char *filePath)
+int Game::PlaySound(char *filePath)
 {
   this->result = ma_engine_init(NULL, &this->engine);
   if (this->result != MA_SUCCESS)
   {
-    // Failed to initialize audio engine
+    std::cout << "you fucked up\n";
     return -1;
   }
 
-  ma_engine_play_sound(&this->engine, filePath, NULL);
+  std::cout << this->result << " " << filePath << "\n";
+  // const char *cstr = filePath.c_str();
+  //   const char *cstr = filePath.data();
+  //  std::cout << cstr << "\n";
+  const char *testy = "snd/diceRoll.mp3";
+  this->result = ma_engine_play_sound(&this->engine, filePath, NULL); // this->sound
+  if (this->result != MA_SUCCESS)
+  {
+    std::cout << "you fucked up 2\n"
+              << this->result //-7 == resource does not exist
+              << "\n";
+    return -1;
+  }
 
   ma_engine_uninit(&this->engine);
+  std::cout << "you good\n";
   return 0;
 }
 
