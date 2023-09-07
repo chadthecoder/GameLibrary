@@ -11,10 +11,19 @@ Game::Game(std::string ip, char *sound) : /* socket_(this->io_context), send_buf
   // this->io_context = io_context;
   this->ip = ip;
   this->sound = sound;
-  PlaySound("res/cpp/snd/diceRoll.mp3");
+  std::string funny = "res/cpp/snd/diceRoll.mp3";
+  const char *str = funny.c_str();
+  // PlaySound(this->sound);
+  PlaySound(str);
 
   // std::cout << &this->io_context << " " << ip << std::endl;
   // this->StartSend();
+}
+
+// ma_engine_uninit(&this->engine);
+Game::~Game()
+{
+  ma_engine_uninit(&this->engine);
 }
 
 int Game::CreateWindow()
@@ -52,7 +61,7 @@ std::string Game::InitGLEW()
   return openglVersion;
 }
 
-int Game::PlaySound(char *filePath)
+int Game::PlaySound(const char *filePath)
 {
   this->result = ma_engine_init(NULL, &this->engine);
   if (this->result != MA_SUCCESS)
@@ -75,7 +84,7 @@ int Game::PlaySound(char *filePath)
     return -1;
   }
 
-  ma_engine_uninit(&this->engine);
+  // ma_engine_uninit(&this->engine);
   std::cout << "you good\n";
   return 0;
 }

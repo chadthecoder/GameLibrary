@@ -47,6 +47,7 @@ class Game
 {
 public:
   Game(std::string ip, char *sound);
+  ~Game();
   bool Initialize();
   void RunLoop();
   void Shutdown();
@@ -54,7 +55,7 @@ public:
 private:
   int CreateWindow();     // creates glfw window
   std::string InitGLEW(); // returns opengl version
-  int PlaySound(char *filePath);
+  int PlaySound(const char *filePath);
   void ProcessInput();
   bool UpdateGame();
   void Render();
