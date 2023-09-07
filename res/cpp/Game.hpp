@@ -14,6 +14,8 @@
 
 #include "Rectangle.hpp"
 
+#include "miniaudio.h"
+
 #include <string>
 #include <iostream>
 #include <cmath>
@@ -169,12 +171,13 @@ public:
 private:
   int CreateWindow();     // creates glfw window
   std::string InitGLEW(); // returns opengl version
+  int PlaySound(const char *filePath);
   void ProcessInput();
   bool UpdateGame();
   void Render();
   void UpdateScore();
-  void StartSend();
-  void StartReceive();
+  // void StartSend();
+  // void StartReceive();
 
   void centerVector2(Vector2 vec);
 
@@ -186,7 +189,12 @@ private:
 
   GLFWwindow *window;
   std::string openglVersion;
+
   Rectangle rectLeftSrc, rectRightSrc, rectDest;
+
+  ma_result result;
+  ma_engine engine;
+
   // SDL_Window *mWindow;
   // SDL_Renderer *mRenderer;
   Paddle paddleU, funny;

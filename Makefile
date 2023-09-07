@@ -16,7 +16,7 @@ linkingDepsLin = -L "libsLin\glew\lib\Release\Win32" -L "libsLin\glfw\lib-mingw"
 
 libsLin = $(includeDepsLin) $(linkingDepsLin) $(linksLin)
 
-dotOLin = lin/main.o lin/Game.o
+dotOLin = lin/main.o lin/Game.o lin/Links.o
 
 outputLin = -o "lin/testGame"
 
@@ -31,16 +31,22 @@ lin/main.o: main.cpp
 lin/Game.o: res/cpp/Game.cpp
 	$(cc) -c res/cpp/Game.cpp -o lin/Game.o
 
+lin/Links.o: res/cpp/Links.cpp
+	$(cc) -c res/cpp/Links.cpp -o lin/Links.o
+
 runLin:
 	lin/testGame "127.0.0.1"
 
 cleanLin:
 	rm lin/*.o
-	rm lin/"$(gameName)"
+	rm lin/testGame
 	rm lin/server
 
-buildLinServer:
-	g++ server.cpp -o lin/server
+linServer:
+	g++ res/cpp/server.cpp -o lin/server
 
 runLinServer:
 	./lin/server
+
+cleanLinServer:
+	rm lin/server

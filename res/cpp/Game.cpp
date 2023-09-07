@@ -49,6 +49,21 @@ std::string Game::InitGLEW()
   return openglVersion;
 }
 
+int Game::PlaySound(const char *filePath)
+{
+  this->result = ma_engine_init(NULL, &this->engine);
+  if (this->result != MA_SUCCESS)
+  {
+    // Failed to initialize audio engine
+    return -1;
+  }
+
+  ma_engine_play_sound(&this->engine, filePath, NULL);
+
+  ma_engine_uninit(&this->engine);
+  return 0;
+}
+
 /* void Game::StartSend()
 {
   udp::resolver resolver(this->io_context);
