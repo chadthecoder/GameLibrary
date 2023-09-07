@@ -10,6 +10,7 @@ Game::Game(std::string ip) : /* socket_(this->io_context), send_buf({{0}}), */ m
   // print the ref of io_context to show that it worked for now
   // this->io_context = io_context;
   this->ip = ip;
+  PlaySound("res/snd/diceRoll.mp3");
   // std::cout << &this->io_context << " " << ip << std::endl;
   // this->StartSend();
 }
@@ -204,6 +205,8 @@ void Game::RunLoop()
       break;
     }
     this->Render();
+    if (glfwWindowShouldClose(this->window))
+      this->mIsRunning = false;
   }
 }
 
@@ -265,6 +268,7 @@ void Game::ProcessInput()
   {
     this->funny.direction += 1;
   } */
+  glfwPollEvents();
 }
 
 bool Game::UpdateGame()
@@ -277,91 +281,6 @@ bool Game::UpdateGame()
   if (this->deltaTime > 0.05f)
   {
     this->deltaTime = 0.05f;
-  }
-
-  // if paddle collides with side of screen, collision detection
-  if ((gameBall.y >= (this->screenHeight - this->thickness)) && (gameBall.yVelocity > 0.0f))
-  {
-    gameBall.yVelocity *= -1;
-  }
-  else if ((gameBall.y <= this->thickness) && (gameBall.yVelocity < 0.0f))
-  {
-    gameBall.yVelocity *= -1;
-  }
-  else if ((gameBall.x <= this->thickness) && (gameBall.xVelocity < 0.0f))
-  {
-    this->rightPoints += 1;
-    gameBall.x = this->screenWidth / 2;
-    gameBall.y = this->screenHeight / 2;
-    // gameBall.xVelocity *= -1;
-  }
-  else if ((gameBall.x >= (this->screenWidth - this->thickness)) && (gameBall.xVelocity > 0.0f))
-  {
-    this->leftPoints += 1;
-    gameBall.x = this->screenWidth / 2;
-    gameBall.y = this->screenHeight / 2;
-    // gameBall.xVelocity *= -1;
-  }
-
-  // game over because one side has 7 points
-  if (this->leftPoints == 7)
-  {
-    std::cout << "The left side wins!\n";
-    /*
-      Doesn't do anything right now since returning false stops loop, but could be used in the future.
-      this->mIsRunning = false;
-    */
-    return false;
-  }
-
-  if (this->rightPoints == 7)
-  {
-    std::cout << "The right side wins!\n";
-    /*
-      Doesn't do anything right now since returning false stops loop, but could be used in the future.
-      this->mIsRunning = false;
-    */
-    return false;
-  }
-
-  // update objects using deltaTime
-  this->gameBall.x += gameBall.xVelocity * this->deltaTime;
-  this->gameBall.y += gameBall.yVelocity * this->deltaTime;
-
-  if (this->paddleU.direction != 0)
-  {
-    if (this->paddleU.y < this->thickness)
-    {
-      this->paddleU.y = this->thickness;
-    }
-    else if (this->paddleU.y > (this->screenHeight - this->thickness - this->paddleU.height))
-    {
-      this->paddleU.y = this->screenHeight - this->thickness - this->paddleU.height;
-    }
-    this->paddleU.y += this->paddleU.direction * 300.0f * this->deltaTime;
-  }
-
-  if (this->funny.direction != 0)
-  {
-    if (this->funny.y < this->thickness)
-    {
-      this->funny.y = this->thickness;
-    }
-    else if (this->funny.y > (this->screenHeight - this->thickness - this->funny.height))
-    {
-      this->funny.y = this->screenHeight - this->thickness - this->funny.height;
-    }
-    this->funny.y += this->funny.direction * 300.0f * this->deltaTime;
-  }
-
-  if (gameBall.collidesWith(paddleU))
-  {
-    // gameBall.xVelocity *= -1;
-  }
-
-  if (gameBall.collidesWith(funny))
-  {
-    // gameBall.xVelocity *= -1;
   }
 
   this->UpdateScore();
